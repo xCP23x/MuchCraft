@@ -18,15 +18,20 @@ public class MuchCommand implements CommandExecutor{
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
         if(cmd.getName().equalsIgnoreCase("wow")){
-            //do stuff
-            if(args.length == 0){
+            DogeMessage message;
+            
+            if(args.length==1 && args[0].equalsIgnoreCase("help")){
+                MuchError.sendError(MuchError.Error.HELP, sender);
+                return true;
+            } else if(args.length == 0){
                 //Produce randomised output
-                        
-            } else if(args.length==1 && args[0].equalsIgnoreCase("help")){
-                MuchError.sendError(MuchError.error.HELP, sender);
+                message = new DogeMessage(sender);
             } else {
-                DogeMessage message = new DogeMessage();
-                message.useLines(args, sender);
+                message = new DogeMessage(args, sender);
+            }
+            
+            if(!message.hasPermissions()){
+                
             }
             
             return true;

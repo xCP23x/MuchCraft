@@ -8,13 +8,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 public class MuchError {
-    public enum error{NO_SPACE_AFTER_COMMA, TOO_MANY_LINES, HELP}
+    public enum Error{NO_SPACE_AFTER_COMMA, TOO_MANY_LINES, HELP}
     private static final ChatColor red = ChatColor.RED;
     private static final ChatColor gold = ChatColor.GOLD;
     private static final ChatColor gray = ChatColor.GRAY;
     
     
-     public static void sendError(error err, CommandSender sender){
+     public static void sendError(Error err, CommandSender sender){
         String head = gold + "MuchCraft " + red + "Error: " + gold;
         switch(err){
             case NO_SPACE_AFTER_COMMA:
@@ -29,10 +29,5 @@ public class MuchError {
                 sender.sendMessage(gold + "/wow message one, message two, etc... " + gray + "- Gives a user defined Doge phrase (lines must be comma separated)");
                 break;
         }
-    }
-    
-    
-    public static void sendDoge(String[] lines){
-        
     }
 }

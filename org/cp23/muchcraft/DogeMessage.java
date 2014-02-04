@@ -6,12 +6,47 @@ package org.cp23.muchcraft;
 
 import java.util.ArrayList;
 import org.bukkit.command.CommandSender;
+import org.cp23.muchcraft.MuchCraft.MsgSource;
 
 public class DogeMessage {
-    
     private ArrayList lines = new ArrayList<>();
+    private MsgSource source;
+    private CommandSender sender;
     
-    public void useLines(String[] rawLines, CommandSender sender){
+    public DogeMessage(String[] rawLines, CommandSender lineSender){
+        //Use lines from raw input
+        readRawLines(rawLines, sender);
+        sender = lineSender;
+        source = MsgSource.CUSTOM;
+    }
+    
+    public DogeMessage(CommandSender lineSender){
+        //Use randomised lines
+        generateLines();
+        sender = lineSender;
+        source = MsgSource.RANDOM;
+    }
+    
+    public boolean hasPermissions(){
+        
+        return false;
+    }
+    
+    public void sendMessage(){
+        //Send message
+        
+    }
+    
+    public MsgSource getSource(){
+        return source;
+    }
+    
+    private void generateLines(){
+        //Generate lines here
+        
+    }
+    
+    private void readRawLines(String[] rawLines, CommandSender sender){
         //Produce custom output
         //Add trailing comma (if there isn't one already)
         rawLines[rawLines.length-1] += rawLines[rawLines.length-1].endsWith(",") ? "": ",";        
@@ -29,7 +64,7 @@ public class DogeMessage {
             } else {
                 //End of line: finish this one, then move to next line
                 if(rawLine.indexOf(",", 0) < rawLine.length()-1){
-                    MuchError.sendError(MuchError.error.NO_SPACE_AFTER_COMMA, sender);
+                    MuchError.sendError(MuchError.Error.NO_SPACE_AFTER_COMMA, sender);
                     return;
                 }
                 
@@ -45,7 +80,7 @@ public class DogeMessage {
         }
         
         if (lines.size() > MuchCraft.customLines){
-            MuchError.sendError(MuchError.error.TOO_MANY_LINES, sender);
+            MuchError.sendError(MuchError.Error.TOO_MANY_LINES, sender);
             return;
         }
         
@@ -53,6 +88,5 @@ public class DogeMessage {
             MuchCraft.debug((String)lines.get(i));
         }
     }
-    
     
 }

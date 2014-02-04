@@ -9,7 +9,7 @@ commands:
     wow:
         description: Generate Doge chat
         usage: /wow help
-        alias: muchcraft
+        aliases: muchcraft
         permission:
             - muchcraft.*
             - muchcraft.random

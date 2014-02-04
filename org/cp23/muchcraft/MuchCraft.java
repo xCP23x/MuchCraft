@@ -13,7 +13,7 @@ public class MuchCraft extends JavaPlugin {
     static final Logger log = Logger.getLogger("Minecraft");
     public static MuchCraft plugin;
     private static boolean debugEnabled=false;
-    private static List<String> prefix, suffix, lines;
+    public static List<String> prefix, suffix, lines;
     public enum listType{PREFIX,SUFFIX,LINES};
     public int randomLines, customLines;
     
@@ -21,11 +21,9 @@ public class MuchCraft extends JavaPlugin {
     public void onEnable(){
         plugin = this;
         getCommand("wow").setExecutor(new MuchCommand(this));
-        getCommand("muchcraft").setExecutor(new MuchCommand(this));
         
         //Prepare config
-        this.getConfig().options().copyDefaults(true);
-        this.saveConfig();
+        this.saveDefaultConfig();
         
         //Load config
         debugEnabled = this.getConfig().getBoolean("debug");

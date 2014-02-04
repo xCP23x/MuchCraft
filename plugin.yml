@@ -1,0 +1,35 @@
+name: MuchCraft
+main: org.cp23.muchcraft.MuchCraft
+version: 1.0
+description: Easily generate Doge-style chat!
+author: xCP23x
+website: http://dev.bukkit.org/bukkit-plugins/muchcraft/
+
+commands:
+    wow:
+        description: Generate Doge chat
+        usage: /wow help
+        alias: muchcraft
+        permission:
+            - muchcraft.*
+            - muchcraft.random
+            - muchcraft.custom
+        permisison-message: You don't have permission to use MuchCraft!
+    
+
+permissions:
+    muchcraft.*:
+        description: Gives access to all MuchCraft permissions
+        default: op
+        children:
+            muchcraft.random: true
+            muchcraft.custom: true
+    
+    muchcraft.random:
+        description: Gives access to randomly generated message
+        default: false
+        
+    muchcraft.custom:
+        description: Gives access to custom message
+        default: false
+    

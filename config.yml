@@ -1,0 +1,23 @@
+#Maximum number of lines for custom messages
+customLines: 6
+
+#Number of lines for random messages
+randomLines: 4
+
+#Full random messages
+lines:
+    - Wow
+
+#Lines can also be generated from a prefix and a suffix:
+prefix:
+    - Such
+    - Much
+    - So
+    - Very
+
+suffix:
+    - Minceraft
+    - dig
+    
+#Enable debug messages (this WILL spam the console)
+debug: false

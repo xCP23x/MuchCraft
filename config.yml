@@ -5,7 +5,7 @@ customLines: 6
 randomLines: 4
 
 #Full random messages
-lines:
+full:
     - Wow
 
 #Lines can also be generated from a prefix and a suffix:

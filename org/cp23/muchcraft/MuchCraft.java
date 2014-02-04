@@ -13,8 +13,8 @@ public class MuchCraft extends JavaPlugin {
     static final Logger log = Logger.getLogger("Minecraft");
     public static MuchCraft plugin;
     private static boolean debugEnabled=false;
-    public static List<String> prefix, suffix, lines;
-    public enum listType{PREFIX,SUFFIX,LINES};
+    public static List<String> prefix, suffix, full;
+//    public enum listType{PREFIX,SUFFIX,full};
     public int randomLines, customLines;
     
     @Override
@@ -32,7 +32,7 @@ public class MuchCraft extends JavaPlugin {
         //Load lists
         prefix = this.getConfig().getStringList("prefix");
         suffix = this.getConfig().getStringList("suffix");
-        lines = this.getConfig().getStringList("lines");
+        full = this.getConfig().getStringList("full");
         //Load limits
         randomLines = this.getConfig().getInt("randomLines");
         customLines = this.getConfig().getInt("customLines");

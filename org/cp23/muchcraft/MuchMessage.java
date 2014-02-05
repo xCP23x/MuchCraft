@@ -14,7 +14,7 @@ public class MuchMessage {
     private final ArrayList lines = new ArrayList<>();
     private final MsgSource Source;
     private CommandSender sender;
-    private final Boolean isValid;
+    private boolean isValid;
     
     public MuchMessage(String[] rawLines, CommandSender lineSender){
         //Use lines from raw input
@@ -60,7 +60,7 @@ public class MuchMessage {
         }
     }
     
-    public Boolean isValid(){
+    public boolean isValid(){
         return isValid;
     }
     

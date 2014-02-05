@@ -27,5 +27,8 @@ suffix:
     - game
     - diamonds
     
-#Enable debug messages (this WILL spam the console)
+#Enter the colors to use (in raw hex values)
+colors: [6,9,a,b,c,d,e,f]
+    
+#Enable debug messages (this may spam the console)
 debug: false

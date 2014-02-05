@@ -8,7 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 public class MuchError {
-    public enum Error{NO_SPACE_AFTER_COMMA, TOO_MANY_LINES, HELP, NO_PERM_CUSTOM, NO_PERM_RANDOM}
+    public enum Error{NO_SPACE_AFTER_COMMA, TOO_MANY_LINES, HELP, NO_PERM_CUSTOM, NO_PERM_RANDOM, NO_PERM_RELOAD}
     private static final ChatColor red = ChatColor.RED;
     private static final ChatColor gold = ChatColor.GOLD;
     private static final ChatColor gray = ChatColor.GRAY;
@@ -22,20 +22,25 @@ public class MuchError {
                 break;
             case TOO_MANY_LINES:
                 sender.sendMessage(head + "Too many lines - Maximum is limited to " + gray + MuchCraft.customLines);
-                sender.sendMessage(head + "Permission node " + gray + "muchcraft.nolimit" + gold + " would bypass this");
+                sender.sendMessage(gold + "Permission node " + gray + "muchcraft.nolimit" + gold + " would bypass this");
                 break;
             case NO_PERM_CUSTOM:
                 sender.sendMessage(head + "You do not have permission to send a custom message - Permission: " + gray + "muchcraft.custom");
-                sendError(Error.HELP, sender);
+                sender.sendMessage(gold + "Use " + gray + "/wow help " + gold + "for usage");
                 break;
             case NO_PERM_RANDOM:
                 sender.sendMessage(head + "You do not have permission to send a random message - Permission: " + gray + "muchcraft.random");
-                sendError(Error.HELP, sender);
+                sender.sendMessage(gold + "Use " + gray + "/wow help " + gold + "for usage");
+                break;
+            case NO_PERM_RELOAD:
+                sender.sendMessage(head + "You do not have permission to reload the config - Permission: " + gray + "muchcraft.reload");
+                sender.sendMessage(gold + "Use " + gray + "/wow help " + gold + "for usage");
                 break;
             case HELP:
                 sender.sendMessage(gold + "MuchCraft usage:");
                 sender.sendMessage(gold + "/wow " + gray + "- Gives a randomly generated Doge phrase");
-                sender.sendMessage(gold + "/wow message one, message two, etc... " + gray + "- Gives a user defined Doge phrase (lines must be comma separated)");
+                sender.sendMessage(gold + "/wow [message one, message two, etc...] " + gray + "- Gives a user defined Doge phrase (lines must be comma separated)");
+                sender.sendMessage(gold + "/wow reload " + gray + "- Reloads the config");
                 break;
         }
     }

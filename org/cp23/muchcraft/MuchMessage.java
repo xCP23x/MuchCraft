@@ -6,7 +6,8 @@ package org.cp23.muchcraft;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Set;
+import org.bukkit.ChatColor;
+import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.cp23.muchcraft.MuchCraft.MsgSource;
@@ -15,17 +16,16 @@ import org.cp23.muchcraft.MuchError.Error;
 public class MuchMessage {
     private final ArrayList lines = new ArrayList<>();
     private final MsgSource Source;
-    private CommandSender sender;
+    private final CommandSender sender;
     private boolean isValid;
+    private final int LINE_WIDTH = 52;
+    private final double SPACE_WIDTH = 52.0/34.0;
     
     public MuchMessage(String[] rawLines, CommandSender lineSender){
         //Use lines from raw input
-        isValid = readRawLines(rawLines, sender);
         sender = lineSender;
+        isValid = readRawLines(rawLines, sender);
         Source = MsgSource.CUSTOM;
-        for(int i=0; i<lines.size(); i++){
-            MuchCraft.debug((String)lines.get(i));
-        }
     }
     
     public MuchMessage(CommandSender lineSender){
@@ -34,9 +34,6 @@ public class MuchMessage {
         Source = MsgSource.RANDOM;
         generateLines(MuchCraft.randomLines);
         isValid = true;
-        for(int i=0; i<lines.size(); i++){
-            MuchCraft.debug((String)lines.get(i));
-        }
     }
     
     public boolean hasPermissions(){
@@ -72,9 +69,37 @@ public class MuchMessage {
         return isValid;
     }
     
-    public void send(){
+    public void send(Server server){
         //Send message
+        //rList stores which colors have been used to reduce repetition
+        ArrayList<Integer> rList = new ArrayList<Integer>();
         
+        for(int i=0; i<lines.size(); i++){
+            int r;
+            String l = lines.get(i).toString();
+            String offset = getOffsetString(ranInt(0, LINE_WIDTH - l.length()));
+            
+            //Clear rList when full  
+            if(rList.size() >= MuchCraft.color.size() -1) rList.clear();
+            do {
+                r = ranInt(0, MuchCraft.color.size() -1);
+            } while(listContains(rList, r));
+            rList.add(r);
+            
+            //Get color and broadcast
+            ChatColor cCol = ChatColor.getByChar(MuchCraft.color.get(r));
+            server.broadcastMessage(offset + cCol + l);
+        }
+    }
+    
+    private String getOffsetString(int offset){
+        String offStr = "";
+        //Correct for space width (compared to widest character)
+        offset = (int) (((double) offset)*SPACE_WIDTH);
+        for(int i=0; i<offset; i++){
+            offStr = offStr + " ";
+        }
+        return offStr;
     }
     
     private void generateLines(int nLines){

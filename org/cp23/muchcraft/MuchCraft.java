@@ -13,7 +13,7 @@ public class MuchCraft extends JavaPlugin {
     public static final Logger log = Logger.getLogger("Minecraft");
     public static MuchCraft plugin;
     private static boolean debugEnabled=false;
-    public static List<String> prefix, suffix, full;
+    public static List<String> prefix, suffix, full, color;
     public static int randomLines, customLines;
     public enum MsgSource{CUSTOM, RANDOM};
     
@@ -21,21 +21,7 @@ public class MuchCraft extends JavaPlugin {
     public void onEnable(){
         plugin = this;
         getCommand("wow").setExecutor(new MuchCommand(this));
-        
-        //Prepare config
-        this.saveDefaultConfig();
-        
-        //Load config
-        debugEnabled = this.getConfig().getBoolean("debug");
-        if(debugEnabled) log.info("[MuchCraft] Such debug - Much enabled!");
-        
-        //Load lists
-        prefix = this.getConfig().getStringList("prefix");
-        suffix = this.getConfig().getStringList("suffix");
-        full = this.getConfig().getStringList("full");
-        //Load limits
-        randomLines = this.getConfig().getInt("randomLines");
-        customLines = this.getConfig().getInt("customLines");
+        loadConfig();
     }
     
     @Override
@@ -46,6 +32,31 @@ public class MuchCraft extends JavaPlugin {
         if(debugEnabled==true){
             log.info("[MuchCraft][DEBUG]: "+msg);
         }
+    }
+    
+    public void reload(){
+        log.info("[MuchCraft] Much reload");
+        this.reloadConfig();
+        loadConfig();
+        log.info("[MuchCraft] Such success!");
+    }
+    
+    private void loadConfig(){
+        //Prepare config (if it doesn't exist)
+        this.saveDefaultConfig();
+        
+        //Load config
+        debugEnabled = this.getConfig().getBoolean("debug");
+        if(debugEnabled) log.info("[MuchCraft] Such debug - Much enabled!");
+        
+        //Load lists
+        prefix = this.getConfig().getStringList("prefix");
+        suffix = this.getConfig().getStringList("suffix");
+        full = this.getConfig().getStringList("full");
+        color = this.getConfig().getStringList("colors");
+        //Load limits
+        randomLines = this.getConfig().getInt("randomLines");
+        customLines = this.getConfig().getInt("customLines");
     }
     
 }

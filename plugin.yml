@@ -10,13 +10,6 @@ commands:
         description: Generate Doge chat
         usage: /wow help
         aliases: muchcraft
-        permission:
-            - muchcraft.*
-            - muchcraft.random
-            - muchcraft.custom
-            - muchcraft.nolimit
-        permisison-message: You don't have permission to use MuchCraft!
-    
 
 permissions:
     muchcraft.*:
@@ -26,15 +19,20 @@ permissions:
             muchcraft.random: true
             muchcraft.custom: true
             muchcraft.nolimit: true
+            muchcraft.reload: true
     
     muchcraft.random:
         description: Gives access to randomly generated message
-        default: false
+        default: true
         
     muchcraft.custom:
         description: Gives access to custom message
-        default: false
+        default: true
     
     muchcraft.nolimit:
         description: Removes line limit from messages
-        default: false
+        default: op
+        
+    muchcraft.reload:
+        description: Gives access to reload config
+        default: op

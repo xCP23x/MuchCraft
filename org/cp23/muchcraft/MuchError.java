@@ -22,6 +22,15 @@ public class MuchError {
                 break;
             case TOO_MANY_LINES:
                 sender.sendMessage(head + "Too many lines - Maximum is limited to " + gray + MuchCraft.customLines);
+                sender.sendMessage(head + "Permission node " + gray + "muchcraft.nolimit" + gold + " would bypass this");
+                break;
+            case NO_PERM_CUSTOM:
+                sender.sendMessage(head + "You do not have permission to send a custom message - Permission: " + gray + "muchcraft.custom");
+                sendError(Error.HELP, sender);
+                break;
+            case NO_PERM_RANDOM:
+                sender.sendMessage(head + "You do not have permission to send a random message - Permission: " + gray + "muchcraft.random");
+                sendError(Error.HELP, sender);
                 break;
             case HELP:
                 sender.sendMessage(gold + "MuchCraft usage:");

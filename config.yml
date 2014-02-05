@@ -7,6 +7,7 @@ randomLines: 4
 #Full random messages
 full:
     - Wow
+    - Pls play
 
 #Lines can also be generated from a prefix and a suffix:
 prefix:
@@ -14,10 +15,17 @@ prefix:
     - Much
     - So
     - Very
+    - Many
 
 suffix:
     - Minceraft
     - dig
+    - blocks
+    - pixels
+    - amuse
+    - fun
+    - game
+    - diamonds
     
 #Enable debug messages (this WILL spam the console)
 debug: false

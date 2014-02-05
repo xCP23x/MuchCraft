@@ -14,7 +14,6 @@ public class MuchCraft extends JavaPlugin {
     public static MuchCraft plugin;
     private static boolean debugEnabled=false;
     public static List<String> prefix, suffix, full;
-//    public enum listType{PREFIX,SUFFIX,full};
     public static int randomLines, customLines;
     public enum MsgSource{CUSTOM, RANDOM};
     

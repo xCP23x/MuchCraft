@@ -5,6 +5,8 @@
 package org.cp23.muchcraft;
 
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.Set;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.cp23.muchcraft.MuchCraft.MsgSource;
@@ -21,14 +23,20 @@ public class MuchMessage {
         isValid = readRawLines(rawLines, sender);
         sender = lineSender;
         Source = MsgSource.CUSTOM;
+        for(int i=0; i<lines.size(); i++){
+            MuchCraft.debug((String)lines.get(i));
+        }
     }
     
     public MuchMessage(CommandSender lineSender){
         //Use randomised lines
         sender = lineSender;
         Source = MsgSource.RANDOM;
-        generateLines();
+        generateLines(MuchCraft.randomLines);
         isValid = true;
+        for(int i=0; i<lines.size(); i++){
+            MuchCraft.debug((String)lines.get(i));
+        }
     }
     
     public boolean hasPermissions(){
@@ -69,9 +77,52 @@ public class MuchMessage {
         
     }
     
-    private void generateLines(){
-        //Generate lines here
+    private void generateLines(int nLines){
+        //rList stores which phrases have been used to reduce repetition
+        ArrayList<Integer> rList = new ArrayList<Integer>(), sList = new ArrayList<Integer>();
         
+        for(int i=0; i<nLines; i++){
+            //Choose which full message or prefix to use - Numbered full first, then prefixed
+            int fSize = MuchCraft.full.size();
+            int pSize = MuchCraft.prefix.size();
+            int r, rPre, rSuf;
+            
+            //Clear rList when full            
+            if(rList.size() >= fSize+pSize) rList.clear();
+            do {
+                r = ranInt(0,fSize+pSize -1);
+            } while(listContains(rList, r));
+            
+            rList.add(r);
+            
+            if(r<fSize){
+                //A full message has been chosen
+                lines.add(MuchCraft.full.get(r));
+            } else {
+                //Prefix chosen - generate suffix
+                
+                if(sList.size() >= fSize+pSize) sList.clear();
+                do {
+                    rSuf = ranInt(0, MuchCraft.suffix.size() -1);
+                } while(listContains(sList, rSuf));
+                sList.add(rSuf);
+                
+                rPre = r-fSize;
+                lines.add(MuchCraft.prefix.get(rPre) + " " + MuchCraft.suffix.get(rSuf));
+            }
+        }
+    }
+    
+    private boolean listContains(ArrayList<Integer> l, int i){
+        for(int n=0; n<l.size(); n++){
+            if(l.get(n)==i) return true;
+        }
+        return false;
+    }
+    
+    private int ranInt(int min, int max){
+        Random ran = new Random();
+        return ran.nextInt((max-min) +1) +min;
     }
     
     private boolean readRawLines(String[] rawLines, CommandSender sender){
@@ -107,9 +158,6 @@ public class MuchMessage {
             }
         }
         
-        for(int i=0; i<lines.size(); i++){
-            MuchCraft.debug((String)lines.get(i));
-        }
         return true;
     }
     

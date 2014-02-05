@@ -14,6 +14,7 @@ commands:
             - muchcraft.*
             - muchcraft.random
             - muchcraft.custom
+            - muchcraft.nolimit
         permisison-message: You don't have permission to use MuchCraft!
     
 
@@ -24,6 +25,7 @@ permissions:
         children:
             muchcraft.random: true
             muchcraft.custom: true
+            muchcraft.nolimit: true;
     
     muchcraft.random:
         description: Gives access to randomly generated message
@@ -33,3 +35,6 @@ permissions:
         description: Gives access to custom message
         default: false
     
+    muchcraft.nolimit:
+        description: Removes line limit from messages
+        default: false

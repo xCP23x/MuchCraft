@@ -8,7 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 public class MuchError {
-    public enum Error{NO_SPACE_AFTER_COMMA, TOO_MANY_LINES, HELP}
+    public enum Error{NO_SPACE_AFTER_COMMA, TOO_MANY_LINES, HELP, NO_PERM_CUSTOM, NO_PERM_RANDOM}
     private static final ChatColor red = ChatColor.RED;
     private static final ChatColor gold = ChatColor.GOLD;
     private static final ChatColor gray = ChatColor.GRAY;

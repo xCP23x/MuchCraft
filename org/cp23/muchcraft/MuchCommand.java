@@ -18,20 +18,22 @@ public class MuchCommand implements CommandExecutor{
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
         if(cmd.getName().equalsIgnoreCase("wow")){
-            DogeMessage message;
+            MuchMessage message;
             
             if(args.length==1 && args[0].equalsIgnoreCase("help")){
+                //Player requested help
                 MuchError.sendError(MuchError.Error.HELP, sender);
                 return true;
             } else if(args.length == 0){
                 //Produce randomised output
-                message = new DogeMessage(sender);
+                message = new MuchMessage(sender);
             } else {
-                message = new DogeMessage(args, sender);
+                //Give player input to message
+                message = new MuchMessage(args, sender);
             }
             
-            if(!message.hasPermissions()){
-                
+            if(message.hasPermissions() && message.isValid()){
+                message.send();
             }
             
             return true;

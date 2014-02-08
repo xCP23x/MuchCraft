@@ -17,6 +17,11 @@ public class MuchCraft extends JavaPlugin {
     public static int randomLines, customLines;
     public enum MsgSource{CUSTOM, RANDOM};
     
+    //Constants to use:
+    public static final int LINE_WIDTH = 52; //Maximum line width
+    public static final double SPACE_WIDTH = 52.0/34.0; //Size of space
+    public static final int MIN_OFF_DIFF = 20; //Minimum percentage difference in offsets between lines
+    
     @Override
     public void onEnable(){
         plugin = this;

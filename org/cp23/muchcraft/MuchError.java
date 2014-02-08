@@ -8,7 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 public class MuchError {
-    public enum Error{NO_SPACE_AFTER_COMMA, TOO_MANY_LINES, HELP, NO_PERM_CUSTOM, NO_PERM_RANDOM, NO_PERM_RELOAD}
+    public enum Error{NO_SPACE_AFTER_COMMA, TOO_MANY_LINES, LINE_TOO_LONG, HELP, NO_PERM_CUSTOM, NO_PERM_RANDOM, NO_PERM_RELOAD}
     private static final ChatColor red = ChatColor.RED;
     private static final ChatColor gold = ChatColor.GOLD;
     private static final ChatColor gray = ChatColor.GRAY;
@@ -23,6 +23,9 @@ public class MuchError {
             case TOO_MANY_LINES:
                 sender.sendMessage(head + "Too many lines - Maximum is limited to " + gray + MuchCraft.customLines);
                 sender.sendMessage(gold + "Permission node " + gray + "muchcraft.nolimit" + gold + " would bypass this");
+                break;
+            case LINE_TOO_LONG:
+                sender.sendMessage(head + "One of the lines you typed was too long - Maximum length is " + MuchCraft.LINE_WIDTH + " characters");
                 break;
             case NO_PERM_CUSTOM:
                 sender.sendMessage(head + "You do not have permission to send a custom message - Permission: " + gray + "muchcraft.custom");

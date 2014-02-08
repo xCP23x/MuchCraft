@@ -1,6 +1,6 @@
 name: MuchCraft
 main: org.cp23.muchcraft.MuchCraft
-version: 1.0
+version: 1.1
 description: Easily generate Doge-style chat!
 author: xCP23x
 website: http://dev.bukkit.org/bukkit-plugins/muchcraft/

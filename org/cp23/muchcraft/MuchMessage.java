@@ -17,9 +17,8 @@ public class MuchMessage {
     private final ArrayList lines = new ArrayList<>();
     private final MsgSource Source;
     private final CommandSender sender;
-    private boolean isValid;
-    private final int LINE_WIDTH = 52;
-    private final double SPACE_WIDTH = 52.0/34.0;
+    private final boolean isValid;
+
     
     public MuchMessage(String[] rawLines, CommandSender lineSender){
         //Use lines from raw input
@@ -73,11 +72,22 @@ public class MuchMessage {
         //Send message
         //rList stores which colors have been used to reduce repetition
         ArrayList<Integer> rList = new ArrayList<Integer>();
+        //prevOffset stores previous offset value
+        int prevOffset = -1; //Set to -1 to avoid checking on first line
         
         for(int i=0; i<lines.size(); i++){
+            //Get offset
             int r;
             String l = lines.get(i).toString();
-            String offset = getOffsetString(ranInt(0, LINE_WIDTH - l.length()));
+            int minDiff = (int) (MuchCraft.MIN_OFF_DIFF*0.01* (double)(MuchCraft.LINE_WIDTH - l.length()) );
+            
+            
+            do{
+                r = ranInt(0, MuchCraft.LINE_WIDTH - l.length());
+            } while (prevOffset<0? false: (r < prevOffset+minDiff && r > prevOffset-minDiff));
+            
+            String offset = getOffsetString(r);
+            prevOffset = r;
             
             //Clear rList when full  
             if(rList.size() >= MuchCraft.color.size() -1) rList.clear();
@@ -95,7 +105,7 @@ public class MuchMessage {
     private String getOffsetString(int offset){
         String offStr = "";
         //Correct for space width (compared to widest character)
-        offset = (int) (((double) offset)*SPACE_WIDTH);
+        offset = (int) (((double) offset)*MuchCraft.SPACE_WIDTH);
         for(int i=0; i<offset; i++){
             offStr = offStr + " ";
         }
@@ -173,8 +183,15 @@ public class MuchMessage {
                 }
                 
                 tmp = tmp + space + rawLine.replace(",", "");
-                if(!tmp.equals("")){
-                    //Only add if it isn't blank'
+                
+                //Only continue if it isn't blank
+                if(!tmp.equals("")){ 
+                    //Check that it's shorter than one line
+                    if(tmp.length() >= MuchCraft.LINE_WIDTH){
+                        MuchError.sendError(Error.LINE_TOO_LONG, sender);
+                        return false;
+                    }
+                    
                     lines.add(tmp);
                 }
                 

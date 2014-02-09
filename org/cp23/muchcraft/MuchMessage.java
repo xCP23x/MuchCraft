@@ -69,7 +69,14 @@ public class MuchMessage {
     }
     
     public void send(Server server){
-        //Send message
+        //First, broadcast pre-message
+        String msg = MuchCraft.broadcastMessage;
+        
+        if(msg !=null){
+            server.broadcastMessage(getPreMessage(msg, sender));
+        }
+        
+        //Now send doge lines
         //rList stores which colors have been used to reduce repetition
         ArrayList<Integer> rList = new ArrayList<Integer>();
         //prevOffset stores previous offset value
@@ -100,6 +107,46 @@ public class MuchMessage {
             ChatColor cCol = ChatColor.getByChar(MuchCraft.color.get(r));
             server.broadcastMessage(offset + cCol + l);
         }
+    }
+    
+    private String getPreMessage(String msg, CommandSender sender){
+        //Replace player name
+        if (msg.contains("%player%")) {
+            msg = msg.replace("%player%", sender.getName());
+        }
+
+        //Insert chat colours
+        if (msg.toLowerCase().contains("%")) {
+            String[] split = msg.split("%");
+            msg = "";
+
+            //If number of elements is even, there are an odd number of %% - invalid
+            if (split.length % 2 == 0) {
+                MuchCraft.log.warning("[MuchCraft] Error in broadcastMessage syntax: Odd number of % signs");
+            } else {
+                //Iterate through split string
+                for (int i = 0; i < split.length; i++) {
+                    String tmp = split[i];
+                    ChatColor col;
+
+                    //Only apply colour for odd values of i, i.e. values inside %%
+                    if (i % 2 != 0 && !tmp.equals("")) {
+                        col = ChatColor.getByChar(tmp);
+
+                        if (col == null) {
+                            MuchCraft.log.warning("[MuchCraft] Error in broadcastMessage syntax:");
+                            MuchCraft.log.warning("[MuchCraft] " + tmp + " is not a valid colour");
+                        } else {
+                            msg = msg + col;
+                        }
+                    } else {
+                        //Otherwise, put message back together
+                        msg = msg + tmp;
+                    }
+                }
+            }
+        }
+        return msg;
     }
     
     private String getOffsetString(int offset){

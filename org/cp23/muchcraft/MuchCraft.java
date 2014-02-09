@@ -6,6 +6,7 @@ package org.cp23.muchcraft;
 
 import java.util.List;
 import java.util.logging.Logger;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class MuchCraft extends JavaPlugin {
@@ -17,7 +18,6 @@ public class MuchCraft extends JavaPlugin {
     //Config variables:
     public static int randomLines, customLines;
     public static List<String> prefix, suffix, full, color;
-    public static boolean broadcastSender;
     public static String broadcastMessage;
     private static boolean debugEnabled;
     
@@ -70,22 +70,28 @@ public class MuchCraft extends JavaPlugin {
             +"debug : Enable debug messages - may spam console (true/false)\n"
         );
         
-        this.getConfig().options().copyDefaults(true);
-        this.getConfig().options().copyHeader(true);
-        this.getConfig().options().header(header);
+        FileConfiguration config = this.getConfig();
+        
+        config.options().copyDefaults(true);
+        config.options().copyHeader(true);
+        config.options().header(header);
         this.saveConfig();
         
         //Load debug setting
-        debugEnabled = this.getConfig().getBoolean("debug");
+        debugEnabled = config.getBoolean("debug");
         if(debugEnabled) log.info("[MuchCraft] Such debug - Much enabled!");
         
         //Load config
-        customLines = this.getConfig().getInt("customLines");
-        randomLines = this.getConfig().getInt("randomLines");
-        full = this.getConfig().getStringList("full");
-        prefix = this.getConfig().getStringList("prefix");
-        suffix = this.getConfig().getStringList("suffix");
-        color = this.getConfig().getStringList("colors");
+        customLines = config.getInt("customLines");
+        randomLines = config.getInt("randomLines");
+        full = config.getStringList("full");
+        prefix = config.getStringList("prefix");
+        suffix = config.getStringList("suffix");
+        color = config.getStringList("colors");
+        if(config.getBoolean("broadcastSender")){
+            broadcastMessage = config.getString("broadcastMessage");
+        }
+        
     }
     
 }

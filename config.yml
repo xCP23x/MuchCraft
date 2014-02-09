@@ -1,15 +1,10 @@
-#Maximum number of lines for custom messages
 customLines: 6
-
-#Number of lines for random messages
 randomLines: 4
 
-#Full random messages
 full:
     - Wow
     - Pls play
 
-#Lines can also be generated from a prefix and a suffix:
 prefix:
     - Such
     - Much
@@ -26,9 +21,10 @@ suffix:
     - fun
     - game
     - diamonds
-    
-#Enter the colors to use (in raw hex values)
+
 colors: [6,9,a,b,c,d,e,f]
-    
-#Enable debug messages (this may spam the console)
+
+broadcastSender: true
+broadcastMessage: '%6%%player% summoned Doge using /wow !'
+
 debug: false

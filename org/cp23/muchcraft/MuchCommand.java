@@ -4,6 +4,7 @@
 
 package org.cp23.muchcraft;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -31,7 +32,9 @@ public class MuchCommand implements CommandExecutor{
                 //Player requested reload
                 if(sender instanceof Player){
                     if(sender.hasPermission("muchcraft.reload")){
+                        sender.sendMessage(ChatColor.GOLD + "Much reload...");
                         plugin.reload();
+                        sender.sendMessage(ChatColor.GOLD + "Such success!");
                         return true;
                     } else {
                         MuchError.sendError(MuchError.Error.NO_PERM_RELOAD, sender);

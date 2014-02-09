@@ -12,10 +12,14 @@ public class MuchCraft extends JavaPlugin {
     
     public static final Logger log = Logger.getLogger("Minecraft");
     public static MuchCraft plugin;
-    private static boolean debugEnabled=false;
-    public static List<String> prefix, suffix, full, color;
-    public static int randomLines, customLines;
     public enum MsgSource{CUSTOM, RANDOM};
+    
+    //Config variables:
+    public static int randomLines, customLines;
+    public static List<String> prefix, suffix, full, color;
+    public static boolean broadcastSender;
+    public static String broadcastMessage;
+    private static boolean debugEnabled;
     
     //Constants to use:
     public static final int LINE_WIDTH = 52; //Maximum line width
@@ -40,28 +44,48 @@ public class MuchCraft extends JavaPlugin {
     }
     
     public void reload(){
-        log.info("[MuchCraft] Much reload");
+        log.info("[MuchCraft] Much reload...");
         this.reloadConfig();
         loadConfig();
         log.info("[MuchCraft] Such success!");
     }
     
-    private void loadConfig(){
-        //Prepare config (if it doesn't exist)
-        this.saveDefaultConfig();
+    private void loadConfig(){   
         
-        //Load config
+        //To add new entries to old config files, we need to use copyDefaults(true)
+        //This breaks any formatting due to YAML parsing, so comments must be defined in a header:
+        
+        String header = (
+            "MuchCraft configuration file\n"
+            +"See http://dev.bukkit.org/bukkit-plugins/muchcraft/ for more info \n\n"
+            +"customLines: Maximum number of lines for custom messages\n"
+            +"randomLines: Number of lines for random messages\n\n"
+            +"Lines can  be generated from a full phrase, or prefix and a suffix:\n"
+            +"full: Full random messages to use\n"
+            +"prefix: Prefix of random message to use\n"
+            +"suffix: Suffix of random message to use\n\n"
+            +"colors: Colors to use (in raw hex values)\n\n"
+            +"broadcastSender: Broadcast a message containing the name of the sender (true/false)\n"
+            +"broadcastMessage: Message to send - %player% is replaced by the player's name, surround a color value in %% to use it\n\n"
+            +"debug : Enable debug messages - may spam console (true/false)\n"
+        );
+        
+        this.getConfig().options().copyDefaults(true);
+        this.getConfig().options().copyHeader(true);
+        this.getConfig().options().header(header);
+        this.saveConfig();
+        
+        //Load debug setting
         debugEnabled = this.getConfig().getBoolean("debug");
         if(debugEnabled) log.info("[MuchCraft] Such debug - Much enabled!");
         
-        //Load lists
+        //Load config
+        customLines = this.getConfig().getInt("customLines");
+        randomLines = this.getConfig().getInt("randomLines");
+        full = this.getConfig().getStringList("full");
         prefix = this.getConfig().getStringList("prefix");
         suffix = this.getConfig().getStringList("suffix");
-        full = this.getConfig().getStringList("full");
         color = this.getConfig().getStringList("colors");
-        //Load limits
-        randomLines = this.getConfig().getInt("randomLines");
-        customLines = this.getConfig().getInt("customLines");
     }
     
 }

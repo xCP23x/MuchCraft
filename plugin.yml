@@ -20,6 +20,7 @@ permissions:
             muchcraft.custom: true
             muchcraft.nolimit: true
             muchcraft.reload: true
+            muchcraft.nospam: true
     
     muchcraft.random:
         description: Gives access to randomly generated message
@@ -35,4 +36,8 @@ permissions:
         
     muchcraft.reload:
         description: Gives access to reload config
+        default: op
+    
+    muchcraft.nospam:
+        description: Bypasses spam prevention
         default: op

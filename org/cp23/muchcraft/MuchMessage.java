@@ -44,7 +44,7 @@ public class MuchMessage {
                     if(sender.hasPermission("muchcraft.nolimit")){
                         return true;
                     } else {
-                        MuchError.sendError(Error.TOO_MANY_LINES, sender);
+                        MuchError.sendError(Error.NO_PERM_LINES, sender);
                         return false;
                     }
                 }

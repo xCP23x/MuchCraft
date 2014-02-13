@@ -19,6 +19,7 @@ public class MuchCraft extends JavaPlugin {
     public static int randomLines, customLines;
     public static List<String> prefix, suffix, full, color;
     public static String broadcastMessage;
+    public static int spamDelay;
     private static boolean debugEnabled;
     
     //Constants to use:
@@ -58,6 +59,7 @@ public class MuchCraft extends JavaPlugin {
         String header = (
             "MuchCraft configuration file\n"
             +"See http://dev.bukkit.org/bukkit-plugins/muchcraft/ for more info \n\n"
+            +"spamDelay: Delay in seconds to prevent spam\n"
             +"customLines: Maximum number of lines for custom messages\n"
             +"randomLines: Number of lines for random messages\n\n"
             +"Lines can  be generated from a full phrase, or prefix and a suffix:\n"
@@ -82,6 +84,7 @@ public class MuchCraft extends JavaPlugin {
         if(debugEnabled) log.info("[MuchCraft] Such debug - Much enabled!");
         
         //Load config
+        spamDelay = config.getInt("spamDelay");
         customLines = config.getInt("customLines");
         randomLines = config.getInt("randomLines");
         full = config.getStringList("full");

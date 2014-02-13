@@ -4,6 +4,7 @@
 
 package org.cp23.muchcraft;
 
+import java.util.HashMap;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,6 +13,8 @@ import org.bukkit.entity.Player;
 
 public class MuchCommand implements CommandExecutor{
     private final MuchCraft plugin;
+    private static final HashMap<String, Long> lastCommand = new HashMap<String, Long>();
+    
     
     public MuchCommand(MuchCraft plugin){
         this.plugin = plugin;
@@ -53,17 +56,41 @@ public class MuchCommand implements CommandExecutor{
                 
                 
             } else {
-                //Give player input to message
+                //Use player input
                 message = new MuchMessage(args, sender);
             }
             
             
-            if(message.hasPermissions() && message.isValid()){
+            if(message.hasPermissions() && message.isValid() && notSpam(sender)){
                 message.send(plugin.getServer());
             }
             return true;
         }
         return false;
+    }
+    
+    private boolean notSpam(CommandSender sender){
+        if(sender instanceof Player && !sender.hasPermission("muchcraft.nospam")){
+            //Player does not have permission to bypass anti-spam
+            String name = sender.getName();
+            
+            if(lastCommand.containsKey(name)) {
+                if ((System.currentTimeMillis() - lastCommand.get(name)) / 1000.0 > MuchCraft.spamDelay) {
+                    //Spam timeout has expired, reset to current time
+                    lastCommand.put(name, System.currentTimeMillis());
+                    return true;
+                } else {
+                    //Player is still timed out
+                    MuchError.sendError(MuchError.Error.NO_PERM_SPAM, sender);
+                    return false;
+                }
+            } else {
+                //Add player to anti-spam counter
+                lastCommand.put(name, System.currentTimeMillis());
+            }
+        }
+        //Either command was sent from console, or player has permission to bypass anti-spam
+        return true;
     }
 
 }

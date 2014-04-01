@@ -5,6 +5,7 @@
 package org.cp23.muchcraft;
 
 import java.util.HashMap;
+import java.util.UUID;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,7 +14,7 @@ import org.bukkit.entity.Player;
 
 public class MuchCommand implements CommandExecutor{
     private final MuchCraft plugin;
-    private static final HashMap<String, Long> lastCommand = new HashMap<String, Long>();
+    private static final HashMap<UUID, Long> lastCommand = new HashMap<UUID, Long>();
     
     
     public MuchCommand(MuchCraft plugin){
@@ -72,12 +73,12 @@ public class MuchCommand implements CommandExecutor{
     private boolean notSpam(CommandSender sender){
         if(sender instanceof Player && !sender.hasPermission("muchcraft.nospam")){
             //Player does not have permission to bypass anti-spam
-            String name = sender.getName();
+            UUID player = ((Player)sender).getUniqueId();
             
-            if(lastCommand.containsKey(name)) {
-                if ((System.currentTimeMillis() - lastCommand.get(name)) / 1000.0 > MuchCraft.spamDelay) {
+            if(lastCommand.containsKey(player)) {
+                if ((System.currentTimeMillis() - lastCommand.get(player)) / 1000.0 > MuchCraft.spamDelay) {
                     //Spam timeout has expired, reset to current time
-                    lastCommand.put(name, System.currentTimeMillis());
+                    lastCommand.put(player, System.currentTimeMillis());
                     return true;
                 } else {
                     //Player is still timed out
@@ -86,7 +87,7 @@ public class MuchCommand implements CommandExecutor{
                 }
             } else {
                 //Add player to anti-spam counter
-                lastCommand.put(name, System.currentTimeMillis());
+                lastCommand.put(player, System.currentTimeMillis());
             }
         }
         //Either command was sent from console, or player has permission to bypass anti-spam

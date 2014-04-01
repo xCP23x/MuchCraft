@@ -53,8 +53,7 @@ public class MuchMessage {
                 
             } else {
                 //The player doesn't have permission to send this type of message
-                Error Err;
-                Err = Source==MsgSource.CUSTOM ? Error.NO_PERM_CUSTOM : Error.NO_PERM_RANDOM;
+                Error Err = Source==MsgSource.CUSTOM ? Error.NO_PERM_CUSTOM : Error.NO_PERM_RANDOM;
                 MuchError.sendError(Err, sender);
                 return false;
             }
@@ -82,27 +81,22 @@ public class MuchMessage {
         //prevOffset stores previous offset value
         int prevOffset = -1; //Set to -1 to avoid checking on first line
         
-        for(int i=0; i<lines.size(); i++){
+        for (Object line : lines) {
             //Get offset
             int r;
-            String l = lines.get(i).toString();
+            String l = line.toString();
             int minDiff = (int) (MuchCraft.MIN_OFF_DIFF*0.01* (double)(MuchCraft.LINE_WIDTH - l.length()) );
-            
-            
             do{
                 r = ranInt(0, MuchCraft.LINE_WIDTH - l.length());
             } while (prevOffset<0? false: (r < prevOffset+minDiff && r > prevOffset-minDiff));
-            
             String offset = getOffsetString(r);
             prevOffset = r;
-            
             //Clear rList when full  
             if(rList.size() >= MuchCraft.color.size() -1) rList.clear();
             do {
                 r = ranInt(0, MuchCraft.color.size() -1);
             } while(listContains(rList, r));
             rList.add(r);
-            
             //Get color and broadcast
             ChatColor cCol = ChatColor.getByChar(MuchCraft.color.get(r));
             server.broadcastMessage(offset + cCol + l);
@@ -196,8 +190,8 @@ public class MuchMessage {
     }
     
     private boolean listContains(ArrayList<Integer> l, int i){
-        for(int n=0; n<l.size(); n++){
-            if(l.get(n)==i) return true;
+        for (Integer n : l) {
+            if (n == i) return true;
         }
         return false;
     }
@@ -209,8 +203,8 @@ public class MuchMessage {
     
     private boolean readRawLines(String[] rawLines, CommandSender sender){
         //Produce custom output
-        //Add trailing comma (if there isn't one already)
-        rawLines[rawLines.length-1] += rawLines[rawLines.length-1].endsWith(",") ? "": ",";        
+        //Add trailing comma (if there isn't one already)    
+        if(!rawLines[rawLines.length-1].endsWith(",")) rawLines[rawLines.length-1] += ",";
         
         int n=0;
         String tmp = "";

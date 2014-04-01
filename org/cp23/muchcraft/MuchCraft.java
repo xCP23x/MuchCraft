@@ -67,7 +67,7 @@ public class MuchCraft extends JavaPlugin {
             +"full: Full random messages to use\n"
             +"prefix: Prefix of random message to use\n"
             +"suffix: Suffix of random message to use\n\n"
-            +"colors: Colors to use (in raw hex values)\n\n"
+            +"colors: Colours to use (in raw hex values)\n\n"
             +"randomMessageOnNoArgs: If true, send a random message when \"/wow\" is typed. If false, require \"/wow random\"\n\n"
             +"broadcastSender: Broadcast a message containing the name of the sender (true/false)\n"
             +"broadcastMessage: Message to send - %player% is replaced by the player's name, surround a color value in %% to use it\n\n"

@@ -23,6 +23,8 @@ public class MuchCommand implements CommandExecutor{
     
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
+        Boolean sendRemind = false;
+        
         if(cmd.getName().equalsIgnoreCase("wow")){
             MuchMessage message;
             
@@ -65,6 +67,12 @@ public class MuchCommand implements CommandExecutor{
                 //Produce randomised output
                 message = new MuchMessage(sender);
                 
+                //Remind the player that MuchCraft does more than just this (not neccessary without auto-random)
+                //Only do so the first time they run the command, and if they have permission to use custom messages
+                if(sender instanceof Player && lastCommand.get(((Player)sender).getUniqueId())==null && sender.hasPermission("muchcraft.custom")){
+                    sendRemind = true;
+                }
+                
                 
             } else {
                 //Use player input
@@ -74,6 +82,7 @@ public class MuchCommand implements CommandExecutor{
             
             if(message.hasPermissions() && message.isValid() && notSpam(sender)){
                 message.send(plugin.getServer());
+                if(sendRemind) MuchError.sendError(MuchError.Error.REMIND_ON_AUTO, sender);
             }
             return true;
         }
@@ -85,23 +94,28 @@ public class MuchCommand implements CommandExecutor{
     }
     
     private boolean notSpam(CommandSender sender){
-        if(sender instanceof Player && !sender.hasPermission("muchcraft.nospam")){
-            //Player does not have permission to bypass anti-spam
-            UUID player = ((Player)sender).getUniqueId();
-            
-            if(lastCommand.containsKey(player)) {
-                if ((System.currentTimeMillis() - lastCommand.get(player)) / 1000.0 > MuchCraft.spamDelay) {
-                    //Spam timeout has expired, reset to current time
-                    lastCommand.put(player, System.currentTimeMillis());
-                    return true;
+        if(sender instanceof Player){
+            if(!sender.hasPermission("muchcraft.nospam")){
+                //Player does not have permission to bypass anti-spam
+                UUID player = ((Player)sender).getUniqueId();
+                
+                if(lastCommand.containsKey(player)) {
+                    if ((System.currentTimeMillis() - lastCommand.get(player)) / 1000.0 > MuchCraft.spamDelay) {
+                        //Spam timeout has expired, reset to current time
+                        lastCommand.put(player, System.currentTimeMillis());
+                        return true;
+                    } else {
+                        //Player is still timed out
+                        MuchError.sendError(MuchError.Error.NO_PERM_SPAM, sender);
+                        return false;
+                    }
                 } else {
-                    //Player is still timed out
-                    MuchError.sendError(MuchError.Error.NO_PERM_SPAM, sender);
-                    return false;
+                    //Add player to anti-spam counter
+                    lastCommand.put(player, System.currentTimeMillis());
                 }
             } else {
-                //Add player to anti-spam counter
-                lastCommand.put(player, System.currentTimeMillis());
+                //If they have permission to bypass, put them here anyway - used for REMIND_ON_AUTO
+                lastCommand.put(((Player)sender).getUniqueId(), System.currentTimeMillis());
             }
         }
         //Either command was sent from console, or player has permission to bypass anti-spam

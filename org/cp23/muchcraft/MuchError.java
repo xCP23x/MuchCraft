@@ -6,10 +6,9 @@ package org.cp23.muchcraft;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class MuchError {
-    public enum Error{NO_SPACE_AFTER_COMMA, LINE_TOO_LONG, HELP, NO_PERM_CUSTOM, NO_PERM_RANDOM, NO_PERM_LINES, NO_PERM_RELOAD, NO_PERM_SPAM, NO_AUTO_RANDOM}
+    public enum Error{NO_SPACE_AFTER_COMMA, LINE_TOO_LONG, HELP, NO_PERM_CUSTOM, NO_PERM_RANDOM, NO_PERM_LINES, NO_PERM_RELOAD, NO_PERM_SPAM, NO_AUTO_RANDOM, REMIND_ON_AUTO}
     private static final ChatColor red = ChatColor.RED;
     private static final ChatColor gold = ChatColor.GOLD;
     private static final ChatColor gray = ChatColor.GRAY;
@@ -48,8 +47,10 @@ public class MuchError {
             case NO_AUTO_RANDOM:
                 sender.sendMessage(head + "No command specified");
                 sender.sendMessage(gold + "If you meant to send a randomised message, use" + gray + " /wow random");
-                sender.sendMessage(gold + "To enable automatic randomised messages, change " + gray + "randomMessageOnNoArgs" + gold + " in config.yml");
                 sender.sendMessage(gold + "Use " + gray + "/wow help " + gold + "for usage");
+                break;
+            case REMIND_ON_AUTO:
+                sender.sendMessage(gold + "Did you know you can specify custom messages? Try " + gray + "/wow help");
                 break;
             case HELP:
                 //Build help message based on permissions and config options
@@ -79,6 +80,9 @@ public class MuchError {
                     help = gold + "MuchCraft usage:\n" + help;
                 }
                 sender.sendMessage(help);
+                break;
+            default:
+                MuchCraft.debug("MuchError switch statement DEFAULT on: " + err.name());
                 break;
         }
     }

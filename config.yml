@@ -25,7 +25,9 @@ suffix:
 
 colors: [6,9,a,b,c,d,e,f]
 
+randomMessageOnNoArgs: false
+
 broadcastSender: true
-broadcastMessage: '%6%%player% %a%summoned Doge!'
+broadcastMessage: '%6%%player% %a%summoned Doge using /wow'
 
 debug: false

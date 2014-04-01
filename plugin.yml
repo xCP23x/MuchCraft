@@ -8,7 +8,7 @@ website: http://dev.bukkit.org/bukkit-plugins/muchcraft/
 commands:
     wow:
         description: Generate Doge chat
-        usage: /wow help
+        usage: Use /wow help for command usage
         aliases: muchcraft
 
 permissions:

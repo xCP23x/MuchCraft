@@ -51,7 +51,17 @@ public class MuchCommand implements CommandExecutor{
                 }
                 
                 
+            } else if(args.length==1 && args[0].equalsIgnoreCase("random")){
+                //Produce randomised output
+                message = new MuchMessage(sender);
+            
+            
             } else if(args.length == 0){
+                //Check if auto-random is enabled
+                if(!MuchCraft.autoRandom) {
+                    MuchError.sendError(MuchError.Error.NO_AUTO_RANDOM, sender);
+                    return true;
+                }
                 //Produce randomised output
                 message = new MuchMessage(sender);
                 
@@ -68,6 +78,10 @@ public class MuchCommand implements CommandExecutor{
             return true;
         }
         return false;
+    }
+    
+    public static void clearLastCommand(){
+        lastCommand.clear();
     }
     
     private boolean notSpam(CommandSender sender){

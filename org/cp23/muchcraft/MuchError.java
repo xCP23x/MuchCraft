@@ -6,16 +6,18 @@ package org.cp23.muchcraft;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class MuchError {
-    public enum Error{NO_SPACE_AFTER_COMMA, LINE_TOO_LONG, HELP, NO_PERM_CUSTOM, NO_PERM_RANDOM, NO_PERM_LINES, NO_PERM_RELOAD, NO_PERM_SPAM}
+    public enum Error{NO_SPACE_AFTER_COMMA, LINE_TOO_LONG, HELP, NO_PERM_CUSTOM, NO_PERM_RANDOM, NO_PERM_LINES, NO_PERM_RELOAD, NO_PERM_SPAM, NO_AUTO_RANDOM}
     private static final ChatColor red = ChatColor.RED;
     private static final ChatColor gold = ChatColor.GOLD;
     private static final ChatColor gray = ChatColor.GRAY;
     
     
      public static void sendError(Error err, CommandSender sender){
-        String head = gold + "MuchCraft " + red + "Error: " + gold;
+        String head = gold + "MuchCraft " + red + "Error: " + gray;
+        
         switch(err){
             case NO_SPACE_AFTER_COMMA:
                 sender.sendMessage(head + "Commas must be followed by a space");
@@ -43,11 +45,40 @@ public class MuchError {
                 sender.sendMessage(head + "Spam protection - You must wait " + gray + MuchCraft.spamDelay + gold + " seconds between messages");
                 sender.sendMessage(gold + "Permission node " + gray + "muchcraft.nospam" + gold + " would bypass this");
                 break;
+            case NO_AUTO_RANDOM:
+                sender.sendMessage(head + "No command specified");
+                sender.sendMessage(gold + "If you meant to send a randomised message, use" + gray + " /wow random");
+                sender.sendMessage(gold + "To enable automatic randomised messages, change " + gray + "randomMessageOnNoArgs" + gold + " in config.yml");
+                sender.sendMessage(gold + "Use " + gray + "/wow help " + gold + "for usage");
+                break;
             case HELP:
-                sender.sendMessage(gold + "MuchCraft usage:");
-                sender.sendMessage(gold + "/wow " + gray + "- Gives a randomly generated Doge phrase");
-                sender.sendMessage(gold + "/wow [message one, message two, etc...] " + gray + "- Gives a user defined Doge phrase (lines must be comma separated)");
-                sender.sendMessage(gold + "/wow reload " + gray + "- Reloads the config");
+                //Build help message based on permissions and config options
+                String help = "";
+                
+                //Console always has permission, so we don't need to do any instanceof checks
+                if(sender.hasPermission("muchcraft.random")){
+                    if(MuchCraft.autoRandom){
+                        help += gold + "/wow " + gray + "- Gives a randomly generated Doge phrase\n";
+                    } else {
+                        help += gold + "/wow random" + gray + "- Gives a randomly generated Doge phrase\n";
+                    }
+                }
+                
+                if(sender.hasPermission("muchcraft.custom")){
+                    help += gold + "/wow message one, message two, etc... " + gray + "- Gives a user defined Doge phrase (lines must be comma separated)\n";
+                }
+                
+                if(sender.hasPermission("muchcraft.reload")){
+                    help += gold + "/wow reload " + gray + "- Reloads the config";
+                }
+                
+                if(help.equals("")){
+                    //Player has no permissions
+                    help = gold + "Sorry, you don't have permission to use MuchCraft!";
+                } else {
+                    help = gold + "MuchCraft usage:\n" + help;
+                }
+                sender.sendMessage(help);
                 break;
         }
     }

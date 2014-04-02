@@ -26,40 +26,40 @@ public class MuchCommand implements CommandExecutor{
         Boolean sendRemind = false;
         
         if(cmd.getName().equalsIgnoreCase("wow")){
-            MuchMessage message;
+            MuchMessage message = null;
             
-            if(args.length==1 && args[0].equalsIgnoreCase("help")){
-                //Player requested help
-                MuchError.sendError(MuchError.Error.HELP, sender);
-                return true;
+            if(args.length==1){
+                //String switches don't have JRE6 compatibility, but if you're still using that you probably have worse issues
                 
-                
-            } else if(args.length==1 && args[0].equalsIgnoreCase("reload")){
-                //Player requested reload
-                if(sender instanceof Player){
-                    if(sender.hasPermission("muchcraft.reload")){
-                        sender.sendMessage(ChatColor.GOLD + "Much reload...");
-                        plugin.reload();
-                        sender.sendMessage(ChatColor.GOLD + "Such success!");
+                switch (args[0].toLowerCase()) {
+                    case "help":
+                        //Player requested help
+                        MuchError.sendError(MuchError.Error.HELP, sender);
                         return true;
-                    } else {
-                        MuchError.sendError(MuchError.Error.NO_PERM_RELOAD, sender);
+                    case "reload":
+                        //Player requested reload
+                        if(sender instanceof Player){
+                            if(sender.hasPermission("muchcraft.reload")){
+                                sender.sendMessage(ChatColor.GOLD + "Much reload...");
+                                plugin.reload();
+                                sender.sendMessage(ChatColor.GOLD + "Such success!");
+                            } else {
+                                MuchError.sendError(MuchError.Error.NO_PERM_RELOAD, sender);
+                            }
+                        } else {
+                            //It's the console
+                            plugin.reload();
+                        }
                         return true;
-                    }
-                } else {
-                    //It's the console
-                    plugin.reload();
-                    return true;
+                    case "random":
+                    case "auto":
+                        //Produce randomised output
+                        message = new MuchMessage(sender);
+                        break;
                 }
-                
-                
-            } else if(args.length==1 && args[0].equalsIgnoreCase("random")){
-                //Produce randomised output
-                message = new MuchMessage(sender);
-            
             
             } else if(args.length == 0){
-                //Check if auto-random is enabled
+                //Check that auto-random is enabled
                 if(!MuchCraft.autoRandom) {
                     MuchError.sendError(MuchError.Error.NO_AUTO_RANDOM, sender);
                     return true;
@@ -72,7 +72,6 @@ public class MuchCommand implements CommandExecutor{
                 if(sender instanceof Player && lastCommand.get(((Player)sender).getUniqueId())==null && sender.hasPermission("muchcraft.custom")){
                     sendRemind = true;
                 }
-                
                 
             } else {
                 //Use player input

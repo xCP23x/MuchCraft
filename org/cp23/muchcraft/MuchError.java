@@ -79,7 +79,7 @@ public class MuchError {
                 }
                 
                 if(sender.hasPermission("muchcraft.reload")){
-                    help += gold + "/wow reload " + gray + "- Reloads the config";
+                    help += gold + "/wow reload " + gray + "- Reloads the config\n";
                 }
                 
                 if(sender.hasPermission("muchcraft.info")){

@@ -11,6 +11,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.cp23.muchcraft.MuchError.Error;
 
 public class MuchCommand implements CommandExecutor{
     private final MuchCraft plugin;
@@ -26,7 +27,7 @@ public class MuchCommand implements CommandExecutor{
         Boolean sendRemind = false;
         
         if(cmd.getName().equalsIgnoreCase("wow")){
-            MuchMessage message = null;
+            MuchMessage message;
             
             if(args.length==1){
                 //String switches don't have JRE6 compatibility, but if you're still using that you probably have worse issues
@@ -34,7 +35,7 @@ public class MuchCommand implements CommandExecutor{
                 switch (args[0].toLowerCase()) {
                     case "help":
                         //Player requested help
-                        MuchError.sendError(MuchError.Error.HELP, sender);
+                        MuchError.sendError(Error.HELP, sender);
                         return true;
                     case "reload":
                         //Player requested reload
@@ -44,7 +45,7 @@ public class MuchCommand implements CommandExecutor{
                                 plugin.reload();
                                 sender.sendMessage(ChatColor.GOLD + "Such success!");
                             } else {
-                                MuchError.sendError(MuchError.Error.NO_PERM_RELOAD, sender);
+                                MuchError.sendError(Error.NO_PERM_RELOAD, sender);
                             }
                         } else {
                             //It's the console
@@ -56,12 +57,25 @@ public class MuchCommand implements CommandExecutor{
                         //Produce randomised output
                         message = new MuchMessage(sender);
                         break;
+                    case "info":
+                    case "version":
+                    case "about":
+                        //Provide info on plugin
+                        if(sender.hasPermission("muchcraft.info")){
+                            MuchError.sendError(Error.INFO, sender);
+                        } else {
+                            MuchError.sendError(Error.NO_PERM_INFO, sender);
+                        }
+                        return true;
+                    default:
+                        //Use player input
+                        message = new MuchMessage(args, sender);
                 }
             
             } else if(args.length == 0){
-                //Check that auto-random is enabled
+                //Stop if auto-random is disabled
                 if(!MuchCraft.autoRandom) {
-                    MuchError.sendError(MuchError.Error.NO_AUTO_RANDOM, sender);
+                    MuchError.sendError(Error.NO_AUTO_RANDOM, sender);
                     return true;
                 }
                 //Produce randomised output
@@ -81,7 +95,7 @@ public class MuchCommand implements CommandExecutor{
             
             if(message.hasPermissions() && message.isValid() && notSpam(sender)){
                 message.send(plugin.getServer());
-                if(sendRemind) MuchError.sendError(MuchError.Error.REMIND_ON_AUTO, sender);
+                if(sendRemind) MuchError.sendError(Error.REMIND_ON_AUTO, sender);
             }
             return true;
         }
@@ -105,7 +119,7 @@ public class MuchCommand implements CommandExecutor{
                         return true;
                     } else {
                         //Player is still timed out
-                        MuchError.sendError(MuchError.Error.NO_PERM_SPAM, sender);
+                        MuchError.sendError(Error.NO_PERM_SPAM, sender);
                         return false;
                     }
                 } else {

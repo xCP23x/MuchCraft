@@ -21,6 +21,7 @@ permissions:
             muchcraft.nolimit: true
             muchcraft.reload: true
             muchcraft.nospam: true
+            muchcraft.info: true
     
     muchcraft.random:
         description: Gives access to randomly generated message
@@ -28,6 +29,10 @@ permissions:
         
     muchcraft.custom:
         description: Gives access to custom message
+        default: true
+    
+    muchcraft.info:
+        description: Gives information on plugin
         default: true
     
     muchcraft.nolimit:

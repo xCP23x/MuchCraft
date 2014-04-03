@@ -8,11 +8,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 public class MuchError {
-    public enum Error{NO_SPACE_AFTER_COMMA, LINE_TOO_LONG, HELP, NO_PERM_CUSTOM, NO_PERM_RANDOM, NO_PERM_LINES, NO_PERM_RELOAD, NO_PERM_SPAM, NO_AUTO_RANDOM, REMIND_ON_AUTO}
+    public enum Error{NO_SPACE_AFTER_COMMA, LINE_TOO_LONG, HELP, INFO, NO_PERM_INFO, NO_PERM_CUSTOM, NO_PERM_RANDOM, NO_PERM_LINES, NO_PERM_RELOAD, NO_PERM_SPAM, NO_AUTO_RANDOM, REMIND_ON_AUTO}
     private static final ChatColor red = ChatColor.RED;
     private static final ChatColor gold = ChatColor.GOLD;
     private static final ChatColor gray = ChatColor.GRAY;
-    
     
      public static void sendError(Error err, CommandSender sender){
         String head = gold + "MuchCraft " + red + "Error: " + gray;
@@ -44,6 +43,10 @@ public class MuchError {
                 sender.sendMessage(head + "Spam protection - You must wait " + gray + MuchCraft.spamDelay + gold + " seconds between messages");
                 sender.sendMessage(gold + "Permission node " + gray + "muchcraft.nospam" + gold + " would bypass this");
                 break;
+            case NO_PERM_INFO:
+                sender.sendMessage(head + "You do not have permission to get plugin infi - Permission: " + gray + "muchcraft.info");
+                sender.sendMessage(gold + "Use " + gray + "/wow help " + gold + "for usage");
+                break;
             case NO_AUTO_RANDOM:
                 sender.sendMessage(head + "No command specified");
                 sender.sendMessage(gold + "If you meant to send a randomised message, use" + gray + " /wow random");
@@ -51,6 +54,12 @@ public class MuchError {
                 break;
             case REMIND_ON_AUTO:
                 sender.sendMessage(gold + "Did you know you can specify custom messages? Try " + gray + "/wow help");
+                break;
+            case INFO:
+                sender.sendMessage(gold + "MuchCraft version " + gray + MuchCraft.plugin.getDescription().getVersion());
+                sender.sendMessage(gold + "Description: " + gray + MuchCraft.plugin.getDescription().getDescription());
+                sender.sendMessage(gold + "Updates available from " + gray + MuchCraft.plugin.getDescription().getWebsite());
+                sender.sendMessage(gold + "Source code (GNU GPL v2) available from " + gray + "https://github.com/xCP23x/MuchCraft");
                 break;
             case HELP:
                 //Build help message based on permissions and config options
@@ -71,6 +80,10 @@ public class MuchError {
                 
                 if(sender.hasPermission("muchcraft.reload")){
                     help += gold + "/wow reload " + gray + "- Reloads the config";
+                }
+                
+                if(sender.hasPermission("muchcraft.reload")){
+                    help += gold + "/wow info " + gray + "- Returns information about MuchCraft";
                 }
                 
                 if(help.equals("")){

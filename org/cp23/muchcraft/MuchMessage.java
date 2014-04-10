@@ -82,22 +82,27 @@ public class MuchMessage {
         int prevOffset = -1; //Set to -1 to avoid checking on first line
         
         for (Object line : lines) {
-            //Get offset
+            //Get randomised offset
             int r;
             String l = line.toString();
             int minDiff = (int) (MuchCraft.MIN_OFF_DIFF*0.01* (double)(MuchCraft.LINE_WIDTH - l.length()) );
+            
             do{
                 r = ranInt(0, MuchCraft.LINE_WIDTH - l.length());
-            } while (prevOffset<0? false: (r < prevOffset+minDiff && r > prevOffset-minDiff));
+            } while (prevOffset<0 ? false: (r < prevOffset+minDiff && r > prevOffset-minDiff));
+            
             String offset = getOffsetString(r);
             prevOffset = r;
-            //Clear rList when full  
+            
+            //Get randomised colour
+            //Clear rList when all colours have been used  
             if(rList.size() >= MuchCraft.color.size() -1) rList.clear();
             do {
                 r = ranInt(0, MuchCraft.color.size() -1);
-            } while(listContains(rList, r));
+            } while(rList.contains(r));
             rList.add(r);
-            //Get color and broadcast
+            
+            //Get colour and broadcast
             ChatColor cCol = ChatColor.getByChar(MuchCraft.color.get(r));
             server.broadcastMessage(offset + cCol + l);
         }
@@ -136,7 +141,7 @@ public class MuchMessage {
                     } else {
                         //Otherwise, put message back together
                         msg = msg + tmp;
-                    }
+                    }                    
                 }
             }
         }
@@ -167,7 +172,8 @@ public class MuchMessage {
             if(rList.size() >= fSize+pSize) rList.clear();
             do {
                 r = ranInt(0,fSize+pSize -1);
-            } while(listContains(rList, r));
+            //} while(listContains(rList, r));
+            } while(rList.contains(r));
             
             rList.add(r);
             
@@ -180,7 +186,7 @@ public class MuchMessage {
                 if(sList.size() >= fSize+pSize) sList.clear();
                 do {
                     rSuf = ranInt(0, MuchCraft.suffix.size() -1);
-                } while(listContains(sList, rSuf));
+                } while(sList.contains(rSuf));
                 sList.add(rSuf);
                 
                 rPre = r-fSize;
@@ -188,14 +194,14 @@ public class MuchMessage {
             }
         }
     }
-    
+    /*
     private boolean listContains(ArrayList<Integer> l, int i){
         for (Integer n : l) {
             if (n == i) return true;
         }
         return false;
     }
-    
+    */
     private int ranInt(int min, int max){
         Random ran = new Random();
         return ran.nextInt((max-min) +1) +min;

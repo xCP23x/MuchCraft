@@ -194,14 +194,7 @@ public class MuchMessage {
             }
         }
     }
-    /*
-    private boolean listContains(ArrayList<Integer> l, int i){
-        for (Integer n : l) {
-            if (n == i) return true;
-        }
-        return false;
-    }
-    */
+    
     private int ranInt(int min, int max){
         Random ran = new Random();
         return ran.nextInt((max-min) +1) +min;
@@ -212,7 +205,6 @@ public class MuchMessage {
         //Add trailing comma (if there isn't one already)    
         if(!rawLines[rawLines.length-1].endsWith(",")) rawLines[rawLines.length-1] += ",";
         
-        int n=0;
         String tmp = "";
         String space=""; //Allows us to easily enable or disable space insertion
         
@@ -243,7 +235,6 @@ public class MuchMessage {
                 }
                 
                 tmp = ""; space = "";
-                n = n+1;
             }
         }
         

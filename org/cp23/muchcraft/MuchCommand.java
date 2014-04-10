@@ -52,11 +52,6 @@ public class MuchCommand implements CommandExecutor{
                             plugin.reload();
                         }
                         return true;
-                    case "random":
-                    case "auto":
-                        //Produce randomised output
-                        message = new MuchMessage(sender);
-                        break;
                     case "info":
                     case "version":
                     case "about":
@@ -70,18 +65,14 @@ public class MuchCommand implements CommandExecutor{
                     default:
                         //Use player input
                         message = new MuchMessage(args, sender);
+                        break;
                 }
             
             } else if(args.length == 0){
-                //Stop if auto-random is disabled
-                if(!MuchCraft.autoRandom) {
-                    MuchError.sendError(Error.NO_AUTO_RANDOM, sender);
-                    return true;
-                }
                 //Produce randomised output
                 message = new MuchMessage(sender);
                 
-                //Remind the player that MuchCraft does more than just this (not neccessary without auto-random)
+                //Remind the player that MuchCraft does more than just this
                 //Only do so the first time they run the command, and if they have permission to use custom messages
                 if(sender instanceof Player && lastCommand.get(((Player)sender).getUniqueId())==null && sender.hasPermission("muchcraft.custom")){
                     sendRemind = true;

@@ -205,7 +205,7 @@ public class MuchMessage {
     private boolean readRawLines(String[] rawLines, CommandSender sender){
         //Convert custom output to lines
         
-        //Add trailing comma (if there isn't one already)    
+        //Add trailing comma if there isn't one already
         if(!rawLines[rawLines.length-1].endsWith(",")) rawLines[rawLines.length-1] += ",";
         
         //Put rawLines into a stack (FIFO)
@@ -229,9 +229,8 @@ public class MuchMessage {
                     continue;
                 }
                 
+                //Only continue if tmp isn't blank
                 tmp = tmp.replace(",", "");
-                
-                //Only continue if it isn't blank
                 if(!tmp.equals("")){ 
                     //Check that it's shorter than one line
                     if(tmp.length() >= MuchCraft.LINE_WIDTH){

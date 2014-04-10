@@ -20,7 +20,7 @@ public class MuchCraft extends JavaPlugin {
     public static List<String> prefix, suffix, full, color;
     public static String broadcastMessage;
     public static int spamDelay;
-    public static boolean debugEnabled, autoRandom;
+    public static boolean debugEnabled;
     
     //Constants to use:
     public static final int LINE_WIDTH = 52; //Maximum line width
@@ -68,7 +68,6 @@ public class MuchCraft extends JavaPlugin {
             +"prefix: Prefix of random message to use\n"
             +"suffix: Suffix of random message to use\n\n"
             +"colors: Colours to use (in raw hex values)\n\n"
-            +"randomMessageOnNoArgs: If true, send a random message when \"/wow\" is typed. If false, require \"/wow random\"\n\n"
             +"broadcastSender: Broadcast a message containing the name of the sender (true/false)\n"
             +"broadcastMessage: Message to send - %player% is replaced by the player's name, surround a color value in %% to use it\n\n"
             +"debug : Enable debug messages - may spam console (true/false)\n"
@@ -93,7 +92,6 @@ public class MuchCraft extends JavaPlugin {
         prefix = config.getStringList("prefix");
         suffix = config.getStringList("suffix");
         color = config.getStringList("colors");
-        autoRandom = config.getBoolean("randomMessageOnNoArgs");
         if(config.getBoolean("broadcastSender")){
             broadcastMessage = config.getString("broadcastMessage");
         }

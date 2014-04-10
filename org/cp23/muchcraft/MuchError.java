@@ -8,7 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 public class MuchError {
-    public enum Error{NO_SPACE_AFTER_COMMA, LINE_TOO_LONG, HELP, INFO, NO_PERM_INFO, NO_PERM_CUSTOM, NO_PERM_RANDOM, NO_PERM_LINES, NO_PERM_RELOAD, NO_PERM_SPAM, NO_AUTO_RANDOM, REMIND_ON_AUTO}
+    public enum Error{LINE_TOO_LONG, HELP, INFO, NO_PERM_INFO, NO_PERM_CUSTOM, NO_PERM_RANDOM, NO_PERM_LINES, NO_PERM_RELOAD, NO_PERM_SPAM, NO_AUTO_RANDOM, REMIND_ON_AUTO}
     private static final ChatColor red = ChatColor.RED;
     private static final ChatColor gold = ChatColor.GOLD;
     private static final ChatColor gray = ChatColor.GRAY;
@@ -17,9 +17,6 @@ public class MuchError {
         String head = gold + "MuchCraft " + red + "Error: " + gray;
         
         switch(err){
-            case NO_SPACE_AFTER_COMMA:
-                sender.sendMessage(head + "Commas must be followed by a space");
-                break;
             case LINE_TOO_LONG:
                 sender.sendMessage(head + "One of the lines you typed was too long - Maximum length is " + MuchCraft.LINE_WIDTH + " characters");
                 break;
@@ -47,11 +44,6 @@ public class MuchError {
                 sender.sendMessage(head + "You do not have permission to get plugin infi - Permission: " + gray + "muchcraft.info");
                 sender.sendMessage(gold + "Use " + gray + "/wow help " + gold + "for usage");
                 break;
-            case NO_AUTO_RANDOM:
-                sender.sendMessage(head + "No command specified");
-                sender.sendMessage(gold + "If you meant to send a randomised message, use" + gray + " /wow random");
-                sender.sendMessage(gold + "Use " + gray + "/wow help " + gold + "for usage");
-                break;
             case REMIND_ON_AUTO:
                 sender.sendMessage(gold + "Did you know you can specify custom messages? Try " + gray + "/wow help");
                 break;
@@ -67,11 +59,7 @@ public class MuchError {
                 
                 //Console always has permission, so we don't need to do any instanceof checks
                 if(sender.hasPermission("muchcraft.random")){
-                    if(MuchCraft.autoRandom){
-                        help += gold + "/wow " + gray + "- Gives a randomly generated Doge phrase\n";
-                    } else {
-                        help += gold + "/wow random" + gray + "- Gives a randomly generated Doge phrase\n";
-                    }
+                    help += gold + "/wow " + gray + "- Gives a randomly generated Doge phrase\n";
                 }
                 
                 if(sender.hasPermission("muchcraft.custom")){

@@ -4,7 +4,9 @@
 
 package org.cp23.muchcraft;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.Random;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
@@ -201,27 +203,33 @@ public class MuchMessage {
     }
     
     private boolean readRawLines(String[] rawLines, CommandSender sender){
-        //Produce custom output
+        //Convert custom output to lines
+        
         //Add trailing comma (if there isn't one already)    
         if(!rawLines[rawLines.length-1].endsWith(",")) rawLines[rawLines.length-1] += ",";
         
-        String tmp = "";
-        String space=""; //Allows us to easily enable or disable space insertion
+        //Put rawLines into a stack (FIFO)
+        Deque stack = new ArrayDeque<String>();
+        for(String line : rawLines){
+            stack.addLast(line);
+        }
         
-        for (String rawLine : rawLines) {
+        while(!stack.isEmpty()){
+            String tmp = (String)stack.pop();
             
-            if(!rawLine.contains(",")){
-                //Add to current line
-                tmp = tmp + space + rawLine;
-                space = " ";
-            } else {
-                //End of line: finish this one, then move to next line
-                if(rawLine.indexOf(",", 0) < rawLine.length()-1){
-                    MuchError.sendError(Error.NO_SPACE_AFTER_COMMA, sender);
-                    return false;
+            if(tmp.lastIndexOf(",") == tmp.length()-1){
+                //Comma at end = end of line
+                
+                if(tmp.indexOf(",") < tmp.length()-1){
+                    //They forgot to put a space after a comma - split it and push to stack
+                    String[] spl = tmp.split(",");
+                    for(int i=spl.length -1; i >= 0; i--){
+                        stack.push(spl[i] + ",");
+                    }
+                    continue;
                 }
                 
-                tmp = tmp + space + rawLine.replace(",", "");
+                tmp = tmp.replace(",", "");
                 
                 //Only continue if it isn't blank
                 if(!tmp.equals("")){ 
@@ -230,15 +238,14 @@ public class MuchMessage {
                         MuchError.sendError(Error.LINE_TOO_LONG, sender);
                         return false;
                     }
-                    
                     lines.add(tmp);
                 }
-                
-                tmp = ""; space = "";
+            } else {
+                //No comma at end = not end of line - combine with next line and push back
+                stack.push(tmp + " " + stack.pop());
             }
         }
-        
         return true;
     }
-    
+
 }

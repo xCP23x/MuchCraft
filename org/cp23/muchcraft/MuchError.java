@@ -41,7 +41,7 @@ public class MuchError {
                 sender.sendMessage(gold + "Permission node " + gray + "muchcraft.nospam" + gold + " would bypass this");
                 break;
             case NO_PERM_INFO:
-                sender.sendMessage(head + "You do not have permission to get plugin infi - Permission: " + gray + "muchcraft.info");
+                sender.sendMessage(head + "You do not have permission to get plugin info - Permission: " + gray + "muchcraft.info");
                 sender.sendMessage(gold + "Use " + gray + "/wow help " + gold + "for usage");
                 break;
             case REMIND_ON_AUTO:

@@ -174,7 +174,6 @@ public class MuchMessage {
             if(rList.size() >= fSize+pSize) rList.clear();
             do {
                 r = ranInt(0,fSize+pSize -1);
-            //} while(listContains(rList, r));
             } while(rList.contains(r));
             
             rList.add(r);

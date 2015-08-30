@@ -39,7 +39,7 @@ public class MuchCraft extends JavaPlugin {
     }
     
     public static void debug(String msg){
-        if(debugEnabled==true){
+        if(debugEnabled){
             log.info("[MuchCraft][DEBUG]: "+msg);
         }
     }
